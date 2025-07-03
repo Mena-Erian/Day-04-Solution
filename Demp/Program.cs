@@ -1,7 +1,35 @@
 ﻿using System.Diagnostics;
 
+//#nullable disable
+
 namespace Demo
 {
+    public class Employee
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = default;
+        public int? Age { get; set; }
+        public decimal Salary { get; set; }
+        public Department?  Department { get; set; }
+        
+        //      association aggregation <= can to be null
+        //public Department? Department { get; set; }
+        //      association composition <= can put anther should to be here not null
+        //public Department Department { get; set; }
+    }
+    public class Department
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+    public class Person
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = default;
+        public int? Age { get; set; }
+        public decimal Salary { get; set; }
+
+    }
     internal class Program
     {
         static void Main()
@@ -158,8 +186,190 @@ namespace Demo
             #endregion
 
             #endregion
-        
-        
+
+            #region Boxing and UnBoxing
+
+            // Boxing  : Casting From Datatype[ValueType] to Datatype[ReferenceType]
+            // UnBoxing: Casting From Datatype[ReferenceType] to  Datatype[ValueType]
+
+            #endregion
+
+            #region Inheritance: is a
+            //association composition <= can put anther should to be here not null
+            //association aggregation <= can to be null
+
+            //Inheritance: is a
+
+            //object obj;
+            // Declare for Reference of Type Object.
+            // This Reference 'obj' is Refering  to the Default Value of The ReferenceType = NULL.
+            // This Reference 'obj' is Can Refer to an instance of Type "Object" or of any type inheriting from "object"
+
+            //obj = new object();
+            //obj = new string("Mena"); // String is a obj but not The opposite
+            // parent = ChildX
+
+            //string Name ;
+            //Name = obj is string ? (string)obj : "";
+
+            // 1-Animal = Dog //=> "Dog"  is a Animal => true
+            // 2-Dog = Animal //=> Animal is a Dog    not Should to be true may be is cat!
+
+            // (1) obj = string // => string is a obj => true
+            // (2) string = obj // => obj is a string => not Should to be true may be is int or another
+
+            #endregion
+
+            #region Nullable Value Types [C# 2.0 (.NET Framwork 2.5) in 2005]
+
+            // NULL is Not A Vaild Value for Variable of Datatype: ValueType [Struct, Enums]
+            // Nullable ValueTypes: ValueTypes + Allow NULL as a Valid Value.
+
+            // Nullable<int> X = new Nullable<int>(10);
+
+            #region Part 01
+
+            //Nullable<int> Age;
+            //int ? Age;
+            //Age = 22;
+
+            //Age = null;
+
+            //Console.WriteLine(Age is not null ? Age : 0);
+
+            //Console.WriteLine(Age.HasValue ? Age.Value : 0); 
+            #endregion
+
+            #region Casting From ValueType To Nullable<ValueType>
+            //int X = 10;
+
+            // X is int             : Allows integers only.
+            // Y is Nullable<int>   : Allows integers + NULL.
+            //int? Y = (int?)X;
+            // Casting From int [VLAUETYPE] to Nullalbe<int>[Nullable ValueType] implicitly
+            // Safe Casting 
+            #endregion
+
+            #region Part 02
+            ///int? X = null;
+            ///
+            ///// X is Nullable<ValueType> : Allows integers + NULL.
+            ///// Y is int                 : Allows integers ONLY.
+            ///int Y /*= (int)X*/;
+            ///// Casting From Nullabe<int> to int Explicitly
+            ///// UnSafe Code
+            ///
+            ////**** Protective Code *****/
+            ////****************************************************/
+            ///if (X is not null) 
+            ///   Y = X.Value;
+            ///else
+            ///    Y = 0;
+            ////****************************************************/
+            ///Y = X.HasValue ? X.Value : 0;
+            ////****************************************************/
+            ///
+            ///// Null Coalesing Operateor
+            ///Y = X ?? 0;// syntax Suger -----> Y = X.HasValue ? X.Value : 0; 
+            #endregion
+
+
+
+
+            #endregion
+
+            #region Struct?
+            //Person? person = new Person() { Id = 101, Name = "Mena", Age = null, Salary = 5_000 };
+
+            //Console.WriteLine(person.Value.Age);
+
+            #endregion
+
+            #region Nullable ReferenceType [C# 10.0 (.NET 6.0) in NoV.2021]
+
+            // NULL is a valid Value For the Variables of Datatype: RefernceType[Interface, Class].
+
+            //string Message01 = null!; // ! Null Forgivness Operator
+            // Message01 = null;
+
+            //string? Message02 = null;
+
+            //Console.WriteLine(Message01);
+
+            //Console.WriteLine(Message02);
+
+            #endregion
+
+            #region Null Propagational/Conditional Operator
+
+            //int[]? Numbers = [1, 2, 3];
+            //Numbers = null;
+
+            #region Example 01
+            //if (Numbers is not null)
+            //{
+            //    for (int i = 0; i < Numbers.Length; i++)
+            //    {
+            //        Console.WriteLine(Numbers[i]);
+            //    }
+
+            //}
+
+
+            ////Null Propagational/Conditional Operator not the best here
+            //for (int i = 0;  (Numbers is not null) && i < Numbers.Length; i++)
+            //{
+            //    Console.WriteLine(Numbers[i]);
+            //}
+            //for (int i = 0; i < Numbers?.Length /* (Numbers is not null) && i < Numbers.Length*/ ; i++)
+            //{
+            //    Console.WriteLine(Numbers[i]);
+            //} 
+            #endregion
+            #region Example 02
+
+            //int Length;
+
+
+            //if (Numbers is not null)
+            //    Length = Numbers.Length;
+            //else
+            //    Length = 0;
+
+            ////Length = Numbers?.Length ?? 0;
+
+            ////       Numbers is not null ?? Numbers.Length = null;
+            //#endregion 
+            #endregion
+
+            //Employee employee = new Employee()
+            //{
+            //    Id = 1,
+            //    Name = "Mena",
+            //    Age = 22,
+            //    Salary = 5_000,
+            //    Department = new Department()
+            //    {
+            //        Id = 141111,
+            //        Name = "Salas"
+            //    }
+            //};
+
+            ////employee = null;
+
+            //if (employee is not null)
+            //{
+            //    Console.WriteLine(employee.Name);
+            //    if (employee.Department is not null)
+            //    {
+            //        Console.WriteLine(employee.Department.Name);
+            //    }
+
+            //}
+
+            //Console.WriteLine(employee?.Department?.Name ?? "NA");
+            //// should check with ReferenceType and with Nullable[ValueType] types
+            #endregion
         }
     }
 }
